@@ -1,5 +1,5 @@
 export default {
-  namespace: 'user',
+  namespaced: true,
   state: {},
   mutations: {},
   actions: {}

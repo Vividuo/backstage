@@ -9,41 +9,28 @@
       <el-scrollbar class="vertical-scroll">
         <el-main>
           <el-menu
+            router
             :collapse="collapsed"
             background-color="#00142a"
             text-color="#bfcbd9"
             active-text-color="#ffffff"
           >
-            <!-- <el-submenu index="1">
-              <template slot="title">
-                <i class="el-icon-location"></i>
-                <span slot="title">导航一</span>
-              </template>
-              <el-menu-item-group>
-                <span slot="title">分组一</span>
-                <el-menu-item index="1-1">选项1</el-menu-item>
-                <el-menu-item index="1-2">选项2</el-menu-item>
-              </el-menu-item-group>
-              <el-menu-item-group title="分组2">
-                <el-menu-item index="1-3">选项3</el-menu-item>
-              </el-menu-item-group>
-              <el-submenu index="1-4">
-                <span slot="title">选项4</span>
-                <el-menu-item index="1-4-1">选项1</el-menu-item>
-              </el-submenu>
-            </el-submenu>-->
-            <el-menu-item index="2">
+            <el-menu-item index="/">
               <i class="el-icon-menu"></i>
-              <span slot="title">导航二</span>
+              <span slot="title">Dashboard</span>
             </el-menu-item>
-            <el-menu-item index="3" disabled>
-              <i class="el-icon-document"></i>
-              <span slot="title">导航三</span>
-            </el-menu-item>
-            <el-menu-item index="4">
-              <i class="el-icon-setting"></i>
-              <span slot="title">导航四</span>
-            </el-menu-item>
+
+            <el-submenu v-for="(module, key) in modules" :key="key" index="key">
+              <template slot="title">
+                <i :class="module.icon"></i>
+                <span>{{ module.title }}</span>
+              </template>
+              <el-menu-item
+                :index="route.path"
+                v-for="(route, key) in module.routes"
+                :key="key"
+              >{{ route.meta.title }}</el-menu-item>
+            </el-submenu>
           </el-menu>
         </el-main>
       </el-scrollbar>
@@ -56,6 +43,7 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex'
+import modules from '@/modules'
 export default {
   components: {},
 
@@ -65,12 +53,12 @@ export default {
 
   data () {
     return {
-
+      modules
     }
   },
 
   computed: {
-    ...mapState('app', {
+    ...mapState({
       collapsed: state => state.sidebarCollapsed
     }),
 
@@ -89,10 +77,12 @@ export default {
 
   // created () {},
 
-  // mounted () {},
+  mounted () {
+    console.log('mounted sidebar')
+  },
 
   methods: {
-    ...mapMutations('app', [
+    ...mapMutations([
       'toggleSidebar'
     ])
   }

@@ -1,25 +1,28 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import routes from './routes'
+import routes from './routes.js'
+import store from '@/store'
+import whiteList from './whiteList.js'
 import _ from 'lodash'
+
 Vue.use(Router)
 
 const router = new Router({
   routes
 })
 
-const whiteList = []
-
 router.beforeEach((to, from, next) => {
-  if (_.includes(whiteList, to.name)) {
-    return next()
-  }
-
   // 未登录
-  // const isLogin = false
-  // if (!isLogin) {
-  //   return next({ name: 'login' })
-  // }
+  if (!store.state.logged) {
+    if (_.includes(whiteList, to.name)) {
+      return next()
+    }
+    return next({ name: 'login' })
+  }
+  // 已登录
+  if (to.name === 'login') {
+    return next({ name: 'dashboard' })
+  }
   return next()
 })
 export default router

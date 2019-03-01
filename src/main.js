@@ -5,6 +5,7 @@ import store from './store'
 import ElementUI from 'element-ui'
 import VueMoment from 'vue-moment'
 
+import 'animate.css/animate.css'
 import 'normalize.css/normalize.css'
 import 'element-ui/lib/theme-chalk/index.css'
 import '@/assets/fonts/iconfont.css'
